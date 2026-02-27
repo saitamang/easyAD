@@ -10,21 +10,6 @@ if (-not $Exclude) {
     $Exclude = @()
 }
 
-function Add-Finding {
-    param(
-        $Title,
-        $RiskLevel,
-        $Description
-    )
-
-    $Global:Findings += [PSCustomObject]@{
-        Timestamp   = Get-Date
-        Title       = $Title
-        RiskLevel   = $RiskLevel
-        Description = $Description
-    }
-}
-
 function Should-Run {
     param($Name)
 
