@@ -142,7 +142,9 @@ $banner = @"
                                                             
     Active Directory Enumeration & Exploitation Framework
     Like WinPEAS but for Active Directory - Complete Attack Chain
-    Version 3.0 | Run from domain-joined machine
+    Version 1.0 | Run from domain-joined machine
+
+    BY - SAITAMANG
 
 "@
 
@@ -692,5 +694,6 @@ Write-Host "`n" + ("=" * 90) -ForegroundColor Cyan
 Write-Host " EASYAD SCAN COMPLETE" -ForegroundColor Green
 Write-Host " Review findings above and execute attacks in recommended order" -ForegroundColor Yellow
 Write-Host ("=" * 90) "`n" -ForegroundColor Cyan
+
 
 
