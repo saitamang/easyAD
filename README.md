@@ -1,6 +1,14 @@
 # easyAD
 I've created EasyAD.ps1 - an enhanced Active Directory enumeration and exploitation framework inspired by WinPEAS/LinPEAS.
 
+## How to run
+- Download the file either git clone or from powershell iwr
+PS> iwr -uri https://raw.githubusercontent.com/saitamang/easyAD/refs/heads/main/easyAD.ps1 -outfile easyAD.ps1
+- then run full version:
+.\easyAD.ps1
+- run exclude testing:
+.\easyAD.ps1 -Exclude ASREP,Kerberoast
+
 ## Key Enhancements:
 
 ## New Features:
