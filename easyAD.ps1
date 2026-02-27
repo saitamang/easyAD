@@ -1,3 +1,6 @@
+try { chcp 65001 > $null } catch {}
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
+
 param(
     [string[]]$Exclude
 )
