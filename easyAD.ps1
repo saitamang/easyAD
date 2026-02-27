@@ -144,6 +144,8 @@ $banner = @"
     Like WinPEAS but for Active Directory - Complete Attack Chain
     Version 3.0 | Run from domain-joined machine
 
+    By - Saitamang
+
 "@
 
 Write-Host $banner -ForegroundColor Cyan
