@@ -1,9 +1,10 @@
-try { chcp 65001 > $null } catch {}
-try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
-
 param(
     [string[]]$Exclude
 )
+
+# Now safe to run code
+try { chcp 65001 > $null } catch {}
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
 
 if (-not $Exclude) {
     $Exclude = @()
@@ -123,31 +124,24 @@ function LDAPSearch($filter, $props) {
     }
 }
 
-Clear-Host
-
-# Force UTF-8 console output (PowerShell 5.1 safe)
-try {
-    chcp 65001 > $null
-} catch {}
-
-try {
-    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-} catch {}
+# Clear-Host
 
 $banner = @"
 
-    ███████╗ █████╗ ███████╗██╗   ██╗     █████╗ ██████╗ 
-    ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔══██╗██╔══██╗
-    █████╗  ███████║███████╗ ╚████╔╝     ███████║██║  ██║
-    ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ██╔══██║██║  ██║
-    ███████╗██║  ██║███████║   ██║       ██║  ██║██████╔╝
-    ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═╝  ╚═╝╚═════╝ 
-                                                            
-    Active Directory Enumeration & Exploitation Framework
-    Like WinPEAS but for Active Directory - Complete Attack Chain
-    Version 3.0 | Run from domain-joined machine
+ ███████╗ █████╗ ███████╗██╗   ██╗     █████╗ ██████╗ 
+ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔══██╗██╔══██╗
+ █████╗  ███████║███████╗ ╚████╔╝     ███████║██║  ██║
+ ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ██╔══██║██║  ██║
+ ███████╗██║  ██║███████║   ██║       ██║  ██║██████╔╝
+ ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═╝  ╚═╝╚═════╝ 
 
-    By - Saitamang
+ --------------------------------------------------------
+  Active Directory Enumeration & Exploitation Framework
+  Like WinPEAS but for Active Directory - Complete Attack
+  Version 1.0  |  Run from domain-joined machine
+ --------------------------------------------------------
+
+  By - Saitamang
 
 "@
 
