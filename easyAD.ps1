@@ -2,12 +2,23 @@ param(
     [string[]]$Exclude
 )
 
-# Now safe to run code
-try { chcp 65001 > $null } catch {}
-try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
-
 if (-not $Exclude) {
     $Exclude = @()
+}
+
+function Add-Finding {
+    param(
+        $Title,
+        $RiskLevel,
+        $Description
+    )
+
+    $Global:Findings += [PSCustomObject]@{
+        Timestamp   = Get-Date
+        Title       = $Title
+        RiskLevel   = $RiskLevel
+        Description = $Description
+    }
 }
 
 function Should-Run {
@@ -109,24 +120,29 @@ function LDAPSearch($filter, $props) {
     }
 }
 
-# Clear-Host
+Clear-Host
+
+# Force UTF-8 console output (PowerShell 5.1 safe)
+try {
+    chcp 65001 > $null
+} catch {}
+
+try {
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+} catch {}
 
 $banner = @"
 
- ███████╗ █████╗ ███████╗██╗   ██╗     █████╗ ██████╗ 
- ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔══██╗██╔══██╗
- █████╗  ███████║███████╗ ╚████╔╝     ███████║██║  ██║
- ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ██╔══██║██║  ██║
- ███████╗██║  ██║███████║   ██║       ██║  ██║██████╔╝
- ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═╝  ╚═╝╚═════╝ 
-
- --------------------------------------------------------
-  Active Directory Enumeration & Exploitation Framework
-  Like WinPEAS but for Active Directory - Complete Attack
-  Version 1.0  |  Run from domain-joined machine
- --------------------------------------------------------
-
-  By - Saitamang
+    ███████╗ █████╗ ███████╗██╗   ██╗     █████╗ ██████╗ 
+    ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔══██╗██╔══██╗
+    █████╗  ███████║███████╗ ╚████╔╝     ███████║██║  ██║
+    ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ██╔══██║██║  ██║
+    ███████╗██║  ██║███████║   ██║       ██║  ██║██████╔╝
+    ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═╝  ╚═╝╚═════╝ 
+                                                            
+    Active Directory Enumeration & Exploitation Framework
+    Like WinPEAS but for Active Directory - Complete Attack Chain
+    Version 3.0 | Run from domain-joined machine
 
 "@
 
