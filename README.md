@@ -4,6 +4,12 @@ EasyAD.ps1 is an advanced Active Directory enumeration and attack path discovery
 
 It is designed to provide structured LDAP-based enumeration, clear vulnerability reporting, and guided exploitation steps for red team, purple team, and lab environments.
 
+## ☕ Support My Work
+
+If you find this project useful, consider supporting:
+
+👉 [https://www.buymeacoffee.com/saitamang](https://buymeacoffee.com/saitamang)
+
 ---
 
 ## 🚀 How to Run
