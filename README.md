@@ -30,13 +30,15 @@ Option 2 – PowerShell Download
 
 ### Execute Full Scan
 
-.\easyAD.ps1
+```.\easyAD.ps1```
 
 
 ### Execute with Exclusions
 
+```
 .\easyAD.ps1 -Exclude ASREP,Kerberoast
-
+.\easyAD.ps1 -Exclude Kerberoast
+```
 
 ---
 
