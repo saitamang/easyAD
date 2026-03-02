@@ -18,13 +18,13 @@ If you find this project useful, consider supporting:
 
 Option 1 – Git Clone
 
-git clone https://github.com/saitamang/easyAD.git
+```git clone https://github.com/saitamang/easyAD.git```
 
 
 Option 2 – PowerShell Download
 
-iwr -uri https://raw.githubusercontent.com/saitamang/easyAD/refs/heads/main/easyAD.ps1
- -outfile easyAD.ps1
+```iwr -uri https://raw.githubusercontent.com/saitamang/easyAD/refs/heads/main/easyAD.ps1
+ -outfile easyAD.ps1```
 
 
 ---
