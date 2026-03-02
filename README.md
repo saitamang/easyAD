@@ -23,8 +23,7 @@ Option 1 – Git Clone
 
 Option 2 – PowerShell Download
 
-```iwr -uri https://raw.githubusercontent.com/saitamang/easyAD/refs/heads/main/easyAD.ps1
- -outfile easyAD.ps1```
+```iwr -uri https://raw.githubusercontent.com/saitamang/easyAD/refs/heads/main/easyAD.ps1 -outfile easyAD.ps1```
 
 
 ---
